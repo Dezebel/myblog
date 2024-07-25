@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Post; //Import the Post model
+use App\Models\User; //Import the User model
 use Illuminate\Support\Facades\Auth;
 
 class PostController extends Controller
@@ -78,7 +79,7 @@ class PostController extends Controller
 
     public function test()
     {
-        $results=User::all();
+        $results= User::all();
         dd($results);
     }
 }
