@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Auth;
 
 class PostController extends Controller
 {
-  
+      
     
     /**
      * Display a listing of the resource.
@@ -76,5 +76,9 @@ class PostController extends Controller
         //
     }
 
-
+    public function test()
+    {
+        $results=User::all();
+        dd($results);
+    }
 }
