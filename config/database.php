@@ -33,7 +33,7 @@ return [
 
         'mongodb'=>[
             'driver'=>'mongodb',
-            'dsn'=>env('MONGO_DB_CONNECTION').'://'.env('MONGO_DB_HOST').':'.ENV('MONGO_DB_PORT') ,
+            'dsn'=>env('MONGO_DB_CONNECTION').'://'.env('MONGO_DB_HOST').':'.env('MONGO_DB_PORT') ,
             'database'=>env('MONGO_DB_DATABASE')
         ],
         'sqlite' => [
