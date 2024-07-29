@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Post; //Import the Post model
 use App\Models\User; //Import the User model
 use Illuminate\Support\Facades\Auth;
+use \DateTime;
 
 class PostController extends Controller
 {
@@ -79,7 +80,7 @@ class PostController extends Controller
 
     public function test()
     {
-        $results= User::all();
+        $results = Post::count();
         dd($results);
     }
 }
