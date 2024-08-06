@@ -3,7 +3,7 @@
 use App\Http\Controllers\PhotoController;
 use App\Http\Controllers\PostController; 
 use Illuminate\Support\Facades\Route; //dependency added for line 9 controller
-
+use Illuminate\Support\Facades\Auth;
 Route::get('/', function () {
     return view('welcome');
 });
@@ -20,3 +20,6 @@ Route::get('/test',[PostController::class,'test']);
 Auth::routes();
 
  
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
