@@ -1,0 +1,39 @@
+<?php
+
+use App\Http\Controllers\PhotoController;
+use App\Http\Controllers\PostController; 
+use App\Http\Controllers\Admin\UserController; // Add the Admin UserController
+use App\Http\Controllers\Admin\PostController as AdminPostController; // Add the Admin PostController
+use Illuminate\Support\Facades\Route; //dependency added for line 9 controller
+use Illuminate\Support\Facades\Auth;
+Route::get('/', function () {
+    return view('welcome');
+});
+
+Route::group(['middleware'=>['auth']],function(){
+    Route::resource('posts',PostController::class);
+    Route::resource('photos',PhotoController::class);
+    Route::get('/home',[PostController::class,'index'])->name('home');
+});
+
+Route::get('/test',[PostController::class,'test']);
+
+// Admin Routes with AdminMiddleware (assuming you’ve added this middleware)
+Route::group(['middleware' => ['auth', 'admin'], 'prefix' => 'admin'], function () {
+    Route::get('/dashboard', function() {
+        return view('admin.dashboard'); // Example admin dashboard view
+    })->name('admin.dashboard');
+
+    // Routes for managing users
+    //Route::resource('users', UserController::class);
+
+    // Routes for managing blog posts
+    //Route::resource('posts', AdminPostController::class);
+});
+
+Auth::routes();
+Route::get('/home',[App\Http\Controllers\HomeController::class, 'index'])->name('home');
+ 
+
+
+

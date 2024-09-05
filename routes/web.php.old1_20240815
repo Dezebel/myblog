@@ -1,0 +1,41 @@
+<?php
+
+use App\Http\Controllers\PhotoController;
+use App\Http\Controllers\PostController;
+use App\Http\Controllers\AdminController;
+use App\Http\Controllers\Admin\UserController as AdminUserController;
+use App\Http\Controllers\Admin\PostController as AdminPostController;
+use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Auth;
+
+Route::get('/', function () {
+    return view('welcome');
+});
+
+Route::get('/admin', [AdminController::class, 'index'])->name('admin');
+
+// Admin Routes with AdminMiddleware
+Route::group(['middleware' => ['auth', 'admin'], 'prefix' => 'admin'], function () {
+    Route::get('/dashboard', function () {
+        return view('admin.dashboard'); // Example admin dashboard view
+    })->name('admin.dashboard');
+
+    // Routes for managing users
+    Route::resource('users', AdminUserController::class);
+
+    // Routes for managing blog posts
+    Route::resource('posts', AdminPostController::class);
+});
+
+// Routes for authenticated users
+Route::group(['middleware' => ['auth']], function () {
+    Route::resource('users', AdminUserController::class);
+    Route::resource('posts', AdminPostController::class);
+    Route::resource('photos', PhotoController::class);
+    Route::get('/home', [AdminPostController::class, 'index'])->name('home');
+});
+
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::get('/admin', [App\Http\Controllers\AdminController::class, 'index'])->name('admin');

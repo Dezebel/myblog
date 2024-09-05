@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel</title>
+    <!-- Include the CSS files -->
+    <link rel="stylesheet" href="{{ asset('css/dashboard.css') }}">
+    <script src="{{ asset('js/dashboard.js') }}" defer></script>
+</head>
+<body>
+    <header>
+        <!-- Admin Header -->
+    </header>
+    <div class="sidebar"> 
+        <!-- Sidebar Menu -->
+    </div>
+    <div class="content">
+        The content will be displayed here:<p>
+        @yield('content') <!-- Content Section for Users and Post Management -->
+    </div>
+    <footer>
+        <!-- Footer -->
+    </footer>
+</body>
+</html>
