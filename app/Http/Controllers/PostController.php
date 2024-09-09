@@ -3,83 +3,33 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Post; //Import the Post model
-use App\Models\User; //Import the User model
-use Illuminate\Support\Facades\Auth;
-use \DateTime;
+use App\Models\Post; // Import the Post model
 
 class PostController extends Controller
 {
-      
-    
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-
-        $posts=Auth::user()->posts;
-       
-        return view('Posts.index', compact('posts'));
+        // Get all posts and return as JSON for React
+        $posts = Post::all();
+        return response()->json($posts);
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Show the specified resource.
      */
-    public function create()
-    {
-        return view('Posts.create');
-    }
-
-    public function store(Request $request)
-    {
-        $request->validate([
-            'title' => 'required',
-            'content' => 'required'
-        ]);
-
-        Post::create($request->all());
-        return redirect()->route('posts.index');
-
-    }
     public function show(Post $post)
-
     {
-
-        if(Auth::id()!==$post->user_id){// make route secure, unauthorised user
-            abort(403);
-        }
-        return view('Posts.show', compact('post')); 
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
+        // Return the post data as JSON
+        return response()->json($post);
     }
 
     public function test()
     {
+        // For testing, return the count of posts as JSON
         $results = Post::count();
-        dd($results);
-        //return view('Posts.test', compact('results'));
+        return response()->json(['total_posts' => $results]);
     }
 }
