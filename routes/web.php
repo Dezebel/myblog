@@ -1,4 +1,5 @@
 <?php
+
 use App\Http\Controllers\PostController;
 use Illuminate\Support\Facades\Route;
 
@@ -6,5 +7,4 @@ use Illuminate\Support\Facades\Route;
 Route::get('/posts', [PostController::class, 'index']);
 Route::get('/posts/{post}', [PostController::class, 'show']);
 
-// Optional: Keep or remove depending on your needs
-// Auth::routes();
+// Ensure no middleware like ->middleware('cors') is applied to any routes.

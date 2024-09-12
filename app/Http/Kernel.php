@@ -14,11 +14,9 @@ class Kernel extends HttpKernel
      * @var array
      */
     protected $middleware = [
-        // Other middleware
-        \App\Http\Middleware\CorsMiddleware::class,
+        // Remove CorsMiddleware reference here
+        // \App\Http\Middleware\CorsMiddleware::class,
     ];
-    
-    
 
     /**
      * The application's route middleware groups.
@@ -34,6 +32,8 @@ class Kernel extends HttpKernel
             \Illuminate\View\Middleware\ShareErrorsFromSession::class,
             \App\Http\Middleware\VerifyCsrfToken::class,
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
+            // Remove CorsMiddleware reference here
+            // \App\Http\Middleware\CorsMiddleware::class,
         ],
 
         'api' => [
@@ -54,13 +54,13 @@ class Kernel extends HttpKernel
         'auth.basic' => \Illuminate\Auth\Middleware\AuthenticateWithBasicAuth::class,
         'cache.headers' => \Illuminate\Http\Middleware\SetCacheHeaders::class,
         'can' => \Illuminate\Auth\Middleware\Authorize::class,
+        // Remove this cors reference
+        // 'cors' => \App\Http\Middleware\CorsMiddleware::class,
         'guest' => \App\Http\Middleware\RedirectIfAuthenticated::class,
         'password.confirm' => \Illuminate\Auth\Middleware\RequirePassword::class,
         'signed' => \Illuminate\Routing\Middleware\ValidateSignature::class,
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
-        'admin' => \App\Http\Middleware\AdminMiddleware::class
-   
-   
+        'admin' => \App\Http\Middleware\AdminMiddleware::class,
     ];
 }
