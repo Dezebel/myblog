@@ -10,10 +10,19 @@ class PostController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        // Get all posts and return as JSON for React
+        // Get all posts
         $posts = Post::all();
+    
+        // Check if the request has a 'callback' parameter
+        if ($request->has('callback')) {
+            $callback = $request->input('callback');
+            // Return a JSONP response if 'callback' is present
+            return response()->json($posts)->setCallback($callback);
+        }
+    
+        // Return a regular JSON response if 'callback' is not present
         return response()->json($posts);
     }
 
