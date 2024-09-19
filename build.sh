@@ -12,8 +12,7 @@ curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin
 composer -v || (echo "Composer installation failed!" && exit 1)
 
 # Install PHP dependencies using Composer
-/usr/local/bin/composer install 
-#--no-dev --optimize-autoloader
+/usr/local/bin/composer install --no-dev --optimize-autoloader
 
 # Run npm commands for frontend
 npm install

@@ -1,2 +1,5 @@
 [phases.setup]
 nixPkgs = ["php", "phpExtensions.mongodb", "nodejs"]
+
+[phases.build]
+commands = ["./build.sh"]
