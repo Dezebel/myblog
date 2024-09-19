@@ -1,5 +1,6 @@
 #!/bin/bash
 set -e
+#
 
 # Ensure PHP is installed and available (you can add any extra PHP-related installation here if needed)
 php -v || (echo "PHP not found! Please ensure PHP is installed." && exit 1)
@@ -11,7 +12,8 @@ curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin
 composer -v || (echo "Composer installation failed!" && exit 1)
 
 # Install PHP dependencies using Composer
-/usr/local/bin/composer install --no-dev --optimize-autoloader
+/usr/local/bin/composer install 
+#--no-dev --optimize-autoloader
 
 # Run npm commands for frontend
 npm install
