@@ -11,7 +11,13 @@ RUN apt-get update && apt-get install -y \
     libxml2-dev \
     zip \
     libzip-dev \
-    npm
+    npm \
+    libssl-dev \
+    pkg-config
+
+# Install necessary PHP extensions
+RUN pecl install mongodb && docker-php-ext-enable mongodb
+RUN docker-php-ext-install zip pdo mbstring
 
 # Install Composer
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
@@ -22,7 +28,13 @@ WORKDIR /var/www
 # Copy existing application code
 COPY . .
 
-# Install PHP dependencies
+# Ensure correct permissions
+RUN chown -R www-data:www-data /var/www
+
+# Ensure Composer cache is writable
+RUN composer config --global cache-dir /tmp/composer-cache
+
+# Install PHP dependencies with verbose logging
 RUN composer install --no-dev --optimize-autoloader --verbose
 
 # Install npm dependencies and build assets
@@ -30,9 +42,4 @@ RUN npm install
 RUN npm run build
 
 # Copy the Laravel entry point script
-COPY ./docker-entrypoint.sh /usr/local/bin/
-RUN chmod +x /usr/local/bin/docker-entrypoint.sh
-
-# Expose port 9000 and start php-fpm server
-EXPOSE 9000
-CMD ["php-fpm"]
+COPY
