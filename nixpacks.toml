@@ -1,2 +1,2 @@
 [phases.setup]
-nixPkgs = ["php", "phpExtensions.mongodb", "nodejs", "php.composer"]
+nixPkgs = ["php", "phpExtensions.mongodb", "nodejs"]

@@ -5,6 +5,7 @@ set -e
 if ! command -v composer &> /dev/null
 then
     echo "Composer not found. Installing Composer..."
+# Install Composer manually
     curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 else
     echo "Composer is already installed."
