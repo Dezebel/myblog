@@ -42,4 +42,9 @@ RUN npm install
 RUN npm run build
 
 # Copy the Laravel entry point script
-COPY
+COPY ./docker-entrypoint.sh /usr/local/bin/
+RUN chmod +x /usr/local/bin/docker-entrypoint.sh
+
+# Expose port 9000 and start php-fpm server
+EXPOSE 9000
+CMD ["php-fpm"]
