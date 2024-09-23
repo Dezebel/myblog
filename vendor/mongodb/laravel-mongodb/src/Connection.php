@@ -8,6 +8,7 @@ use Composer\InstalledVersions;
 use Illuminate\Database\Connection as BaseConnection;
 use InvalidArgumentException;
 use MongoDB\Client;
+use MongoDB\Collection;
 use MongoDB\Database;
 use MongoDB\Driver\Exception\AuthenticationException;
 use MongoDB\Driver\Exception\ConnectionException;
@@ -47,6 +48,8 @@ class Connection extends BaseConnection
      */
     protected $connection;
 
+    private ?CommandSubscriber $commandSubscriber;
+
     /**
      * Create a new database connection instance.
      */
@@ -62,6 +65,8 @@ class Connection extends BaseConnection
 
         // Create the connection
         $this->connection = $this->createConnection($dsn, $config, $options);
+        $this->commandSubscriber = new CommandSubscriber($this);
+        $this->connection->addSubscriber($this->commandSubscriber);
 
         // Select database
         $this->db = $this->connection->selectDatabase($this->getDefaultDatabaseName($dsn, $config));
@@ -78,28 +83,16 @@ class Connection extends BaseConnection
     /**
      * Begin a fluent query against a database collection.
      *
-     * @param  string $collection
-     *
-     * @return Query\Builder
-     */
-    public function collection($collection)
-    {
-        $query = new Query\Builder($this, $this->getQueryGrammar(), $this->getPostProcessor());
-
-        return $query->from($collection);
-    }
-
-    /**
-     * Begin a fluent query against a database collection.
-     *
-     * @param  string      $table
-     * @param  string|null $as
+     * @param  string      $table The name of the MongoDB collection
+     * @param  string|null $as    Ignored. Not supported by MongoDB
      *
      * @return Query\Builder
      */
     public function table($table, $as = null)
     {
-        return $this->collection($table);
+        $query = new Query\Builder($this, $this->getQueryGrammar(), $this->getPostProcessor());
+
+        return $query->from($table);
     }
 
     /**
@@ -109,9 +102,9 @@ class Connection extends BaseConnection
      *
      * @return Collection
      */
-    public function getCollection($name)
+    public function getCollection($name): Collection
     {
-        return new Collection($this, $this->db->selectCollection($this->tablePrefix . $name));
+        return $this->db->selectCollection($this->tablePrefix . $name);
     }
 
     /** @inheritdoc */
@@ -210,6 +203,8 @@ class Connection extends BaseConnection
     /** @inheritdoc */
     public function disconnect()
     {
+        $this->connection?->removeSubscriber($this->commandSubscriber);
+        $this->commandSubscriber = null;
         $this->connection = null;
     }
 
@@ -277,15 +272,15 @@ class Connection extends BaseConnection
     }
 
     /** @inheritdoc */
-    public function getElapsedTime($start)
-    {
-        return parent::getElapsedTime($start);
-    }
-
-    /** @inheritdoc */
     public function getDriverName()
     {
         return 'mongodb';
+    }
+
+    /** @inheritdoc */
+    public function getDriverTitle()
+    {
+        return 'MongoDB';
     }
 
     /** @inheritdoc */
@@ -312,6 +307,14 @@ class Connection extends BaseConnection
     public function setDatabase(Database $db)
     {
         $this->db = $db;
+    }
+
+    /** @inheritdoc  */
+    public function threadCount()
+    {
+        $status = $this->db->command(['serverStatus' => 1])->toArray();
+
+        return $status[0]['connections']['current'];
     }
 
     /**

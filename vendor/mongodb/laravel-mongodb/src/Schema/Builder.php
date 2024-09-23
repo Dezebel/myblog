@@ -72,26 +72,14 @@ class Builder extends \Illuminate\Database\Schema\Builder
         return $this->hasCollection($table);
     }
 
-    /**
-     * Modify a collection on the schema.
-     *
-     * @param string $collection
-     *
-     * @return void
-     */
-    public function collection($collection, Closure $callback)
+    /** @inheritdoc */
+    public function table($table, Closure $callback)
     {
-        $blueprint = $this->createBlueprint($collection);
+        $blueprint = $this->createBlueprint($table);
 
         if ($callback) {
             $callback($blueprint);
         }
-    }
-
-    /** @inheritdoc */
-    public function table($table, Closure $callback)
-    {
-        $this->collection($table, $callback);
     }
 
     /** @inheritdoc */
