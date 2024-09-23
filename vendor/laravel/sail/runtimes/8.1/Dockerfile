@@ -49,6 +49,10 @@ RUN apt-get update \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
+# Add MongoDB Extension
+RUN pecl install mongodb \
+    && docker-php-ext-enable mongodb
+
 RUN setcap "cap_net_bind_service=+ep" /usr/bin/php8.1
 
 RUN groupadd --force -g $WWWGROUP sail
