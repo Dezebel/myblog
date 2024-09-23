@@ -123,9 +123,9 @@ return [
         'store' => env('APP_MAINTENANCE_STORE', 'database'),
     ],
 
-    'providers' => [
-        // Other service providers...
-        Jenssegers\Mongodb\MongodbServiceProvider::class,
-    ],
+'providers' => [
+    Jenssegers\Mongodb\MongodbServiceProvider::class,
+],
+
 
 ];
