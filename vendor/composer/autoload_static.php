@@ -540,6 +540,7 @@ class ComposerStaticInit9c056b99c5ae4bcebdaf8c4d691530d0
     );
 
     public static $classMap = array (
+        'App\\Console\\Commands\\CustomServeCommand' => __DIR__ . '/../..' . '/app/Console/Commands/CustomServeCommand.php',
         'App\\Http\\Controllers\\API\\AuthController' => __DIR__ . '/../..' . '/app/Http/Controllers/API/AuthController.php',
         'App\\Http\\Controllers\\API\\UserController' => __DIR__ . '/../..' . '/app/Http/Controllers/API/UserController.php',
         'App\\Http\\Controllers\\AdminController' => __DIR__ . '/../..' . '/app/Http/Controllers/AdminController.php',
